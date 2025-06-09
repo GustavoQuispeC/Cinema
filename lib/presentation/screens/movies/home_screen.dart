@@ -1,4 +1,5 @@
 import 'package:cinemapedia/presentation/providers/movies/movies_providers.dart';
+import 'package:cinemapedia/presentation/widgets/shared/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,23 +33,21 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   @override
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-    return ListView.builder(
-      itemCount: nowPlayingMovies.length,
-      itemBuilder: (context, index) {
-        final movie = nowPlayingMovies[index];
-        return ListTile(
-          title: Text(movie.title),
-          leading: movie.posterPath != null
-              ? Image.network(
-                  'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                  width: 50,
-                  height: 75,
-                  fit: BoxFit.cover,
-                )
-              : const Icon(Icons.movie),
-        );
-      },
+    return Column(
+      children: [
+        CustomAppbar(),
+        Expanded(
+          child: ListView.builder(
+            itemCount: nowPlayingMovies.length,
+            itemBuilder: (context, index) {
+              final movie = nowPlayingMovies[index];
+              return ListTile(
+                title: Text(movie.title),
+              );
+            },
+          ),
+        )
+      ],
     );
   }
-  // Load more movies when reaching the end of the list
 }
